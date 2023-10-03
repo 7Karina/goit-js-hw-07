@@ -29,9 +29,20 @@ function handlerClick(e) {
   const target = e.target;
   if (target.nodeName !== "IMG") return;
   const imageUrl = target.dataset.source;
-  const instance = basicLightbox.create(`
+  const instance = basicLightbox.create(
+    `
       <img src="${imageUrl}" width="800" height="600">
-    `);
+    `,
+    {
+      onShow: () => {
+        document.addEventListener("keydown", handleKeyDown);
+      },
+      onClose: () => {
+        document.removeEventListener("keydown", handleKeyDown);
+      },
+    }
+  );
+
   instance.show();
   document.addEventListener("keydown", handleKeyDown);
   function handleKeyDown(event) {
